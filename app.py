@@ -64,4 +64,20 @@ def run(interval):
 
 def application():
     """" All application has its initialization from here """
-    logger.info('Main application is running!')
+
+    channel_info = {'channel_length': 0,
+                    'channel_details': {}
+                    }
+
+    length = int(input('Enter with the data length in bytes (e.g.: 2 bytes): '))
+    channel_info['channel_length'] = length
+
+    qty_channels = int(input('Enter with the channel qty.: '))
+
+    for ch in range(qty_channels):
+
+        label = input('Enter with the channel label (e.g.: AA): ')
+        channel_details = channel_info['channel_details']
+        channel_details['ch_{}'.format(ch)] = label
+
+    logger.info(channel_info)
