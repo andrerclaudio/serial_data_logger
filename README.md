@@ -1,2 +1,2 @@
-## Py_template
-__I am just a Python template repository!__
+## Serial data analyzer
+__More information is coming!__

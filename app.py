@@ -9,12 +9,6 @@ from pytictoc import TicToc
 
 # Project modules
 
-# Print in file
-# logging.basicConfig(filename='logs.log',
-#                     filemode='w',
-#                     level=logging.INFO,
-#                     format='%(asctime)s | %(process)d | %(name)s | %(levelname)s:  %(message)s',
-#                     datefmt='%d/%b/%Y - %H:%M:%S')
 
 # Print in software terminal
 logging.basicConfig(level=logging.INFO,
