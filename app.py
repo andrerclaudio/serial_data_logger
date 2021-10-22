@@ -1,17 +1,10 @@
 # Build-in modules
 import logging
-import random
 import time
 from datetime import timedelta
 from threading import ThreadError, Thread
-from math import sin, cos, pi, radians
-from drawnow import drawnow
-from datetime import datetime
-from matplotlib import pyplot
+from math import sin, radians
 from matplotlib.animation import FuncAnimation
-from random import randrange
-
-# Added modules
 from pytictoc import TicToc
 import matplotlib.pyplot as plt
 
