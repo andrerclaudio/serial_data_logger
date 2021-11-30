@@ -3,14 +3,15 @@ import logging
 import time
 from datetime import timedelta
 from threading import ThreadError, Thread
-from math import sin, radians
-from matplotlib.animation import FuncAnimation
+# from math import sin, radians
+# from matplotlib.animation import FuncAnimation
 from pytictoc import TicToc
-import matplotlib.pyplot as plt
+import sqlite3
+# import matplotlib.pyplot as plt
 
 
 # Print in software terminal
-logging.basicConfig(level=logging.INFO,
+logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s | %(process)d | %(name)s | %(levelname)s:  %(message)s',
                     datefmt='%d/%b/%Y - %H:%M:%S')
 
@@ -96,29 +97,61 @@ def animate(i, xs, ys, ax):
 
 
 def application():
-    """" All application has its initialization from here """
+    """" All application has its initialization from here """   
 
     # Create figure for plotting
-    fig = plt.figure()
-    ax = fig.add_subplot(1, 1, 1)
+    # fig = plt.figure()
+    # ax = fig.add_subplot(1, 1, 1)
 
-    xs = []
-    ys = []
+    # xs = []
+    # ys = []
 
     # Set up plot to call animate() function periodically
-    ani = FuncAnimation(fig, animate, fargs=(xs, ys, ax), cache_frame_data=False, interval=1,)
-    plt.show()
+    # ani = FuncAnimation(fig, animate, fargs=(xs, ys, ax), cache_frame_data=False, interval=1,)
+    # plt.show()
 
-    # channel_info = {'channel_length': 0,
-    #                 'channel_qty': 0}
-    #
+    conn = sqlite3.connect('log.db')
+
+    table_name = 'eval_{}'.format(int(time.time()))
+
+    conn.execute('''
+        CREATE TABLE "{}" (
+        "timestamp"	INTEGER NOT NULL,
+        "channel"	INTEGER NOT NULL,
+        "value"	INTEGER NOT NULL,
+        "color"	INTEGER NOT NULL,
+        "state"	TEXT NOT NULL);
+    '''.format(table_name))
+
+    channel_info = {'channel_length': 0,
+                    'channel_qty': 0}
+
+    c = conn.cursor()
+    
     # length = int(input('Enter with the data length in bytes (e.g.: 2 bytes): '))
     # channel_info['channel_length'] = length
-    #
-    # qty = int(input('Enter with the number of channels: '))
-    # channel_info['channel_qty'] = qty
-    #
-    # for ch in range(channel_info['channel_qty']):
-    #
-    #     label = input('Enter with the channel [{}] label (e.g.: AA): '.format(ch))
-    #     channel_info['ch_{}'.format(ch)] = [label, HEX_COLOR_TABLE[ch][COLOR_VALUE_INDEX]]
+    
+    # qty = int(input('Enter with the number of channels (max. 6 channels): '))
+
+    # if qty <= len(HEX_COLOR_TABLE):
+    #     channel_info['channel_qty'] = qty            
+    #     for ch in range(channel_info['channel_qty']):
+    #         channel_info['ch_{}'.format(ch)] = HEX_COLOR_TABLE[ch][COLOR_VALUE_INDEX]
+
+    
+    param = """INSERT INTO {} (timestamp, channel, value, color, state) VALUES (?, ?, ?, ?, ?);""".format(table_name)
+    data_tuple = (int(time.time()), 1, 32135, 255, 'D')
+    c.execute(param, data_tuple)
+
+    conn.commit()
+    conn.close()
+
+
+def main():
+    application()
+    return None
+
+
+if __name__ == "__main__":
+    # Run the main function.
+    main()
